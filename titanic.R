@@ -1,7 +1,10 @@
 library(h2o)
 setwd('~/scripts/titanic_ml_python_h2o/')
 #create localh2o instance
-localh2o <- h2o.init(ip = 'localhost',port=54321, max_mem_size='4g')
+localh2o <- h2o.init(ip = 'localhost',
+                     port=54321, 
+                     max_mem_size='4g',
+                     nthreads = -1)
 
 # upload data into the local h2o instances
 data_path <- "data.csv"
@@ -43,8 +46,12 @@ plot(perf, type = "roc", col = "blue", typ = "b")
 plot(perf, type = "cutoffs", col = "blue")
 
 # build random forest
-data.rf = h2o.randomForest(data=train, x = data, y = class, importance = T, 
-                           ntree=200, depth=10)
+data.rf = h2o.randomForest(data=train,
+                           x = data, 
+                           y = class, 
+                           importance = T, 
+                           ntree=200, 
+                           depth=10)
 
 # predict the result on testing data
 rf_frame = h2o.predict(data.rf, test)
